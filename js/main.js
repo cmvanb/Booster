@@ -8,7 +8,9 @@ var ballSprite;
 var ball;
 var brickSprite1;
 var bricks;
+
 var edgeThickness = 0;
+var gravity = 1;
 
 function main()
 {
@@ -43,7 +45,7 @@ function setup()
     ball.reset();
 
     var horizontalBricks = 7;
-    var verticalBricks = 8;
+    var verticalBricks = 10;
 
     bricks = [];
 
@@ -59,13 +61,6 @@ function setup()
             bricks.push(b);
         }
     }
-
-    var b2 = new Brick(
-        340,
-        360,
-        brickSprite1);
-
-    bricks.push(b2);
 };
 
 function gameLoop()
@@ -83,7 +78,10 @@ function update()
 
     for (var i = 0; i < bricks.length; ++i)
     {
-        bricks[i].update();
+        if (bricks[i].alive)
+        {
+            bricks[i].update();
+        }
     }
 };
 
@@ -93,7 +91,10 @@ function draw()
 
     for (var i = 0; i < bricks.length; ++i)
     {
-        bricks[i].draw();
+        if (bricks[i].alive)
+        {
+            bricks[i].draw();
+        }
     }
 
     paddle.draw();

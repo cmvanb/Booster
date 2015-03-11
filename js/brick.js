@@ -3,14 +3,28 @@ function Brick(x, y, sprite)
 {
     this.x = x;
     this.y = y;
+    this.velY = 0;
     this.sprite = sprite;
+    this.dropping = false;
+    this.alive = true;
 };
 
 Brick.prototype.update = function()
 {
-    // NOTE: Worst. Collision code. Ever.
+    if (this.dropping)
+    {
+        this.y += this.velY;
+        this.velY += gravity;
 
-    // Collision with ball.
+        if (this.y > spriteRenderer.height)
+        {
+            this.alive = false;
+        }
+
+        return;
+    }
+
+    // NOTE: Worst. Collision code. Ever.
     var ballLeft = ball.x;
     var ballTop = ball.y;
     var ballRight = ball.x + ball.sprite.width;
@@ -30,39 +44,31 @@ Brick.prototype.update = function()
         brickLeft, brickTop, brickRight, brickBottom))
     {
         if (ballRight >= brickLeft
-            && ballRight <= brickRight)
+            && ballRight <= brickRight
+            && ballLeft < brickLeft)
         {
-            if (ballLeft < brickLeft)
-            {
-                intersectingFromLeft = true;
-            }
+            intersectingFromLeft = true;
         }
 
         if (ballLeft >= brickLeft
-            && ballLeft <= brickRight)
+            && ballLeft <= brickRight
+            && ballRight > brickRight)
         {
-            if (ballRight > brickRight)
-            {
-                intersectingFromRight = true;
-            }
+            intersectingFromRight = true;
         }
 
         if (ballBottom >= brickTop
-            && ballBottom <= brickBottom)
+            && ballBottom <= brickBottom
+            && ballTop < brickTop)
         {
-            if (ballTop < brickTop)
-            {
-                intersectingFromTop = true;
-            }
+            intersectingFromTop = true;
         }
 
         if (ballTop >= brickTop
-            && ballTop <= brickBottom)
+            && ballTop <= brickBottom
+            && ballBottom > brickBottom)
         {
-            if (ballBottom > brickBottom)
-            {
-                intersectingFromBottom = true;
-            }
+            intersectingFromBottom = true;
         }
 
         if (intersectingFromLeft)
@@ -81,6 +87,7 @@ Brick.prototype.update = function()
                             // Bounce horizontally.
                             ball.x = brickLeft - ball.sprite.width;
                             ball.velX = -ball.velX;
+                            this.onHit();
                             return;
                         }
                         else
@@ -88,6 +95,7 @@ Brick.prototype.update = function()
                             // Bounce vertically.
                             ball.y = brickTop - ball.sprite.height;
                             ball.velY = -ball.velY;
+                            this.onHit();
                             return;
                         }
                     }
@@ -96,6 +104,7 @@ Brick.prototype.update = function()
                         // Bounce horizontally.
                         ball.x = brickLeft - ball.sprite.width;
                         ball.velX = -ball.velX;
+                        this.onHit();
                         return;
                     }
                 }
@@ -106,6 +115,7 @@ Brick.prototype.update = function()
                         // Bounce vertically.
                         ball.y = brickTop - ball.sprite.height;
                         ball.velY = -ball.velY;
+                        this.onHit();
                         return;
                     }
                     else if (ball.velY < 0)
@@ -124,6 +134,7 @@ Brick.prototype.update = function()
                         // Bounce horizontally.
                         ball.x = brickLeft - ball.sprite.width;
                         ball.velX = -ball.velX;
+                        this.onHit();
                         return;
                     }
                     else if (ball.velY < 0)
@@ -136,6 +147,7 @@ Brick.prototype.update = function()
                             // Bounce horizontally.
                             ball.x = brickLeft - ball.sprite.width;
                             ball.velX = -ball.velX;
+                            this.onHit();
                             return;
                         }
                         else
@@ -143,6 +155,7 @@ Brick.prototype.update = function()
                             // Bounce vertically.
                             ball.y = brickBottom;
                             ball.velY = -ball.velY;
+                            this.onHit();
                             return;
                         }
                     }
@@ -159,6 +172,7 @@ Brick.prototype.update = function()
                         // Bounce vertically.
                         ball.y = brickBottom;
                         ball.velY = -ball.velY;
+                        this.onHit();
                         return;
                     }
                 }
@@ -168,6 +182,7 @@ Brick.prototype.update = function()
                 // Bounce horizontally.
                 ball.x = brickLeft - ball.sprite.width;
                 ball.velX = -ball.velX;
+                this.onHit();
                 return;
             }
         }
@@ -182,6 +197,7 @@ Brick.prototype.update = function()
                         // Bounce vertically.
                         ball.y = brickTop - ball.sprite.height;
                         ball.velY = -ball.velY;
+                        this.onHit();
                         return;
                     }
                     else if (ball.velY < 0)
@@ -202,6 +218,7 @@ Brick.prototype.update = function()
                             // Bounce horizontally.
                             ball.x = brickRight;
                             ball.velX = -ball.velX;
+                            this.onHit();
                             return;
                         }
                         else
@@ -209,6 +226,7 @@ Brick.prototype.update = function()
                             // Bounce vertically.
                             ball.y = brickTop - ball.sprite.height;
                             ball.velY = -ball.velY;
+                            this.onHit();
                             return;
                         }
                     }
@@ -217,6 +235,7 @@ Brick.prototype.update = function()
                         // Bounce horizontally.
                         ball.x = brickRight;
                         ball.velX = -ball.velX;
+                        this.onHit();
                         return;
                     }
                 }
@@ -235,6 +254,7 @@ Brick.prototype.update = function()
                         // Bounce vertically.
                         ball.y = brickBottom;
                         ball.velY = -ball.velY;
+                        this.onHit();
                         return;
                     }
                 }
@@ -245,6 +265,7 @@ Brick.prototype.update = function()
                         // Bounce horizontally.
                         ball.x = brickRight;
                         ball.velX = -ball.velX;
+                        this.onHit();
                         return;
                     }
                     else if (ball.velY < 0)
@@ -257,6 +278,7 @@ Brick.prototype.update = function()
                             // Bounce horizontally.
                             ball.x = brickRight;
                             ball.velX = -ball.velX;
+                            this.onHit();
                             return;
                         }
                         else
@@ -264,6 +286,7 @@ Brick.prototype.update = function()
                             // Bounce vertically.
                             ball.y = brickBottom;
                             ball.velY = -ball.velY;
+                            this.onHit();
                             return;
                         }
                     }
@@ -274,6 +297,7 @@ Brick.prototype.update = function()
                 // Bounce horizontally.
                 ball.x = brickRight;
                 ball.velX = -ball.velX;
+                this.onHit();
                 return;
             }
         }
@@ -284,6 +308,7 @@ Brick.prototype.update = function()
                 // Bounce vertically.
                 ball.y = brickTop - ball.sprite.height;
                 ball.velY = -ball.velY;
+                this.onHit();
                 return;
             }
             else if (intersectingFromBottom)
@@ -291,12 +316,13 @@ Brick.prototype.update = function()
                 // Bounce vertically.
                 ball.y = brickBottom;
                 ball.velY = -ball.velY;
+                this.onHit();
                 return;
             }
             else
             {
                 // TODO: Handle edge case: exact middle collision.
-                console.log("Oops! this edge case is unhandled. you may see weird behavior.")
+                console.log("Oops! this edge case is unhandled. you may see weird behavior.");
                 return;
             }
         }
@@ -310,5 +336,5 @@ Brick.prototype.draw = function()
 
 Brick.prototype.onHit = function()
 {
-
+    this.dropping = true;
 };

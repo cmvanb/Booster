@@ -84,7 +84,7 @@ Ball.prototype.launch = function()
     if (this.launched == false)
     {
         this.velX = -3;
-        this.velY = -3;
+        this.velY = -6;
 
         this.launched = true;
     }
