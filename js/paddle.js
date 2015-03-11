@@ -20,7 +20,7 @@ Paddle.prototype.update = function()
         this.x += 8;
     }
     if (inputHandler.isDown(38)) // Up arrow.
-    {
+    {        
         ball.launch();
     }
     if (this.x < this.minX)

@@ -58,6 +58,13 @@ function setup()
             bricks.push(b);
         }
     }
+
+    var b2 = new Brick(
+        340,
+        360,
+        brickSprite1);
+
+    bricks.push(b2);
 };
 
 function gameLoop()
@@ -70,13 +77,13 @@ function gameLoop()
 
 function update()
 {
+    paddle.update();
+    ball.update();
+
     for (var i = 0; i < bricks.length; ++i)
     {
         bricks[i].update();
     }
-
-    paddle.update();
-    ball.update();
 };
 
 function draw()

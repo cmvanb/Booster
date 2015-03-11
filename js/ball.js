@@ -10,6 +10,9 @@ function Ball(x, y, sprite)
     this.minY = 10;
     this.maxY = (spriteRenderer.height - sprite.height) - 10;
 
+    this.prevX = 0;
+    this.prevY = 0;
+
     this.velX = 0;
     this.velY = 0;
 
@@ -25,6 +28,8 @@ Ball.prototype.update = function()
         return;
     }
 
+    this.prevX = this.x;
+    this.prevY = this.y;
     this.x += this.velX;
     this.y += this.velY;
 
@@ -76,8 +81,11 @@ Ball.prototype.reset = function()
 
 Ball.prototype.launch = function()
 {
-    this.velX = 4;
-    this.velY = -6;
+    if (this.launched == false)
+    {
+        this.velX = 4;
+        this.velY = -6;
 
-    this.launched = true;
+        this.launched = true;
+    }
 };
