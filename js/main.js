@@ -8,6 +8,7 @@ var ballSprite;
 var ball;
 var brickSprite1;
 var bricks;
+var edgeThickness = 0;
 
 function main()
 {

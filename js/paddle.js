@@ -5,8 +5,8 @@ function Paddle(x, y, sprite)
     this.y = y;
     this.sprite = sprite;
 
-    this.minX = 10;
-    this.maxX = (spriteRenderer.width - sprite.width) - 10;
+    this.minX = edgeThickness;
+    this.maxX = (spriteRenderer.width - sprite.width) - edgeThickness;
 };
 
 Paddle.prototype.update = function()
@@ -20,8 +20,12 @@ Paddle.prototype.update = function()
         this.x += 8;
     }
     if (inputHandler.isDown(38)) // Up arrow.
-    {        
+    {
         ball.launch();
+    }
+    if (inputHandler.isDown(40)) // Down arrow.
+    {
+        ball.reset();
     }
     if (this.x < this.minX)
     {

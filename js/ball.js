@@ -5,10 +5,10 @@ function Ball(x, y, sprite)
     this.y = 0;
     this.sprite = sprite;
 
-    this.minX = 10;
-    this.maxX = (spriteRenderer.width - sprite.width) - 10;
-    this.minY = 10;
-    this.maxY = (spriteRenderer.height - sprite.height) - 10;
+    this.minX = edgeThickness;
+    this.maxX = (spriteRenderer.width - sprite.width) - edgeThickness;
+    this.minY = edgeThickness;
+    this.maxY = (spriteRenderer.height - sprite.height) - edgeThickness;
 
     this.prevX = 0;
     this.prevY = 0;
@@ -83,8 +83,8 @@ Ball.prototype.launch = function()
 {
     if (this.launched == false)
     {
-        this.velX = 4;
-        this.velY = -6;
+        this.velX = -3;
+        this.velY = -3;
 
         this.launched = true;
     }

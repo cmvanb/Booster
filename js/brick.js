@@ -8,29 +8,297 @@ function Brick(x, y, sprite)
 
 Brick.prototype.update = function()
 {
+    // NOTE: Worst. Collision code. Ever.
+
     // Collision with ball.
-    if (ball.x + ball.sprite.width > this.x
-        && ball.x < this.x + this.sprite.width)
+    var ballLeft = ball.x;
+    var ballTop = ball.y;
+    var ballRight = ball.x + ball.sprite.width;
+    var ballBottom = ball.y + ball.sprite.height;
+
+    var brickLeft = this.x;
+    var brickTop = this.y;
+    var brickRight = this.x + this.sprite.width;
+    var brickBottom = this.y + this.sprite.height;
+
+    var intersectingFromLeft = false;
+    var intersectingFromRight = false;
+    var intersectingFromTop = false;
+    var intersectingFromBottom = false;
+
+    if (rectangleIntersect(ballLeft, ballTop, ballRight, ballBottom,
+        brickLeft, brickTop, brickRight, brickBottom))
     {
-        if (ball.y + ball.sprite.height > this.y
-            && ball.y < this.y + this.sprite.height)
+        if (ballRight >= brickLeft
+            && ballRight <= brickRight)
         {
-            // If the ball came from above the brick...
-            if (ball.prevY < this.y
-                && ball.velY > 0)
+            if (ballLeft < brickLeft)
             {
-                ball.y = this.y - ball.sprite.height;
+                intersectingFromLeft = true;
             }
+        }
 
-            // If the ball came from below the brick...
-            if (ball.prevY > this.y + this.sprite.height
-                && ball.velY < 0)
+        if (ballLeft >= brickLeft
+            && ballLeft <= brickRight)
+        {
+            if (ballRight > brickRight)
             {
-                ball.y = this.y + this.sprite.height;
+                intersectingFromRight = true;
             }
+        }
 
-            // Bounce!
-            ball.velY = -ball.velY;
+        if (ballBottom >= brickTop
+            && ballBottom <= brickBottom)
+        {
+            if (ballTop < brickTop)
+            {
+                intersectingFromTop = true;
+            }
+        }
+
+        if (ballTop >= brickTop
+            && ballTop <= brickBottom)
+        {
+            if (ballBottom > brickBottom)
+            {
+                intersectingFromBottom = true;
+            }
+        }
+
+        if (intersectingFromLeft)
+        {
+            if (intersectingFromTop)
+            {
+                if (ball.velX > 0)
+                {
+                    if (ball.velY > 0)
+                    {
+                        var xIntersectLength = ballRight - brickLeft;
+                        var yIntersectLength = ballBottom - brickTop;
+
+                        if (xIntersectLength >= yIntersectLength)
+                        {
+                            // Bounce horizontally.
+                            ball.x = brickLeft - ball.sprite.width;
+                            ball.velX = -ball.velX;
+                            return;
+                        }
+                        else
+                        {
+                            // Bounce vertically.
+                            ball.y = brickTop - ball.sprite.height;
+                            ball.velY = -ball.velY;
+                            return;
+                        }
+                    }
+                    else if (ball.velY < 0)
+                    {
+                        // Bounce horizontally.
+                        ball.x = brickLeft - ball.sprite.width;
+                        ball.velX = -ball.velX;
+                        return;
+                    }
+                }
+                else if (ball.velX < 0)
+                {
+                    if (ball.velY > 0)
+                    {
+                        // Bounce vertically.
+                        ball.y = brickTop - ball.sprite.height;
+                        ball.velY = -ball.velY;
+                        return;
+                    }
+                    else if (ball.velY < 0)
+                    {
+                        // Do nothing, ball is already bouncing away.
+                        return;
+                    }
+                }
+            }
+            else if (intersectingFromBottom)
+            {
+                if (ball.velX > 0)
+                {
+                    if (ball.velY > 0)
+                    {
+                        // Bounce horizontally.
+                        ball.x = brickLeft - ball.sprite.width;
+                        ball.velX = -ball.velX;
+                        return;
+                    }
+                    else if (ball.velY < 0)
+                    {
+                        var xIntersectLength = ballRight - brickLeft;
+                        var yIntersectLength = brickBottom - ballTop;
+
+                        if (xIntersectLength >= yIntersectLength)
+                        {
+                            // Bounce horizontally.
+                            ball.x = brickLeft - ball.sprite.width;
+                            ball.velX = -ball.velX;
+                            return;
+                        }
+                        else
+                        {
+                            // Bounce vertically.
+                            ball.y = brickBottom;
+                            ball.velY = -ball.velY;
+                            return;
+                        }
+                    }
+                }
+                else if (ball.velX < 0)
+                {
+                    if (ball.velY > 0)
+                    {
+                        // Do nothing, ball is already bouncing away.
+                        return;
+                    }
+                    else if (ball.velY < 0)
+                    {
+                        // Bounce vertically.
+                        ball.y = brickBottom;
+                        ball.velY = -ball.velY;
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                // Bounce horizontally.
+                ball.x = brickLeft - ball.sprite.width;
+                ball.velX = -ball.velX;
+                return;
+            }
+        }
+        else if (intersectingFromRight)
+        {
+            if (intersectingFromTop)
+            {
+                if (ball.velX > 0)
+                {
+                    if (ball.velY > 0)
+                    {
+                        // Bounce vertically.
+                        ball.y = brickTop - ball.sprite.height;
+                        ball.velY = -ball.velY;
+                        return;
+                    }
+                    else if (ball.velY < 0)
+                    {
+                        // Do nothing, ball is already bouncing away.
+                        return;
+                    }
+                }
+                else if (ball.velX < 0)
+                {
+                    if (ball.velY > 0)
+                    {
+                        var xIntersectLength = brickRight - ballLeft;
+                        var yIntersectLength = ballBottom - brickTop;
+
+                        if (xIntersectLength >= yIntersectLength)
+                        {
+                            // Bounce horizontally.
+                            ball.x = brickRight;
+                            ball.velX = -ball.velX;
+                            return;
+                        }
+                        else
+                        {
+                            // Bounce vertically.
+                            ball.y = brickTop - ball.sprite.height;
+                            ball.velY = -ball.velY;
+                            return;
+                        }
+                    }
+                    else if (ball.velY < 0)
+                    {
+                        // Bounce horizontally.
+                        ball.x = brickRight;
+                        ball.velX = -ball.velX;
+                        return;
+                    }
+                }
+            }
+            else if (intersectingFromBottom)
+            {
+                if (ball.velX > 0)
+                {
+                    if (ball.velY > 0)
+                    {
+                        // Do nothing, ball is already bouncing away.
+                        return;
+                    }
+                    else if (ball.velY < 0)
+                    {
+                        // Bounce vertically.
+                        ball.y = brickBottom;
+                        ball.velY = -ball.velY;
+                        return;
+                    }
+                }
+                else if (ball.velX < 0)
+                {
+                    if (ball.velY > 0)
+                    {
+                        // Bounce horizontally.
+                        ball.x = brickRight;
+                        ball.velX = -ball.velX;
+                        return;
+                    }
+                    else if (ball.velY < 0)
+                    {
+                        var xIntersectLength = brickRight - ballLeft;
+                        var yIntersectLength = brickBottom - ballTop;
+
+                        if (xIntersectLength >= yIntersectLength)
+                        {
+                            // Bounce horizontally.
+                            ball.x = brickRight;
+                            ball.velX = -ball.velX;
+                            return;
+                        }
+                        else
+                        {
+                            // Bounce vertically.
+                            ball.y = brickBottom;
+                            ball.velY = -ball.velY;
+                            return;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Bounce horizontally.
+                ball.x = brickRight;
+                ball.velX = -ball.velX;
+                return;
+            }
+        }
+        else
+        {
+            if (intersectingFromTop)
+            {
+                // Bounce vertically.
+                ball.y = brickTop - ball.sprite.height;
+                ball.velY = -ball.velY;
+                return;
+            }
+            else if (intersectingFromBottom)
+            {
+                // Bounce vertically.
+                ball.y = brickBottom;
+                ball.velY = -ball.velY;
+                return;
+            }
+            else
+            {
+                // TODO: Handle edge case: exact middle collision.
+                console.log("Oops! this edge case is unhandled. you may see weird behavior.")
+                return;
+            }
         }
     }
 };
