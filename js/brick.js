@@ -3,7 +3,7 @@ function Brick(x, y, sprite)
 {
     this.x = x;
     this.y = y;
-    this.velY = 0;
+    this.velY = 0.0;
     this.sprite = sprite;
     this.dropping = false;
     this.alive = true;
@@ -13,7 +13,7 @@ Brick.prototype.update = function()
 {
     if (this.dropping)
     {
-        this.y += this.velY;
+        this.y += this.velY * deltaTime;
         this.velY += gravity;
 
         if (this.y > spriteRenderer.height)

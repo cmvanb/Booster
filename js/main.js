@@ -10,7 +10,10 @@ var brickSprite1;
 var bricks;
 
 var edgeThickness = 0;
-var gravity = 1;
+var gravity = 9.81;
+
+var deltaTime;
+var lastFrameTime;
 
 function main()
 {
@@ -73,6 +76,11 @@ function gameLoop()
 
 function update()
 {
+    var currentTime = Date.now();
+
+    deltaTime = (currentTime - lastFrameTime) / 1000.0;
+    lastFrameTime = currentTime;
+
     paddle.update();
     ball.update();
 

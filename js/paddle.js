@@ -7,17 +7,19 @@ function Paddle(x, y, sprite)
 
     this.minX = edgeThickness;
     this.maxX = (spriteRenderer.width - sprite.width) - edgeThickness;
+
+    this.moveSpeed = 400.0;
 };
 
 Paddle.prototype.update = function()
 {
     if (inputHandler.isDown(37)) // Left arrow.
     {
-        this.x -= 8;
+        this.x -= this.moveSpeed * deltaTime;
     }
     if (inputHandler.isDown(39)) // Right arrow.
     {
-        this.x += 8;
+        this.x += this.moveSpeed * deltaTime;
     }
     if (inputHandler.isDown(38)) // Up arrow.
     {

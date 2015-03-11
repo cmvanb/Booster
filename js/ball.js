@@ -1,8 +1,8 @@
 // Ball
 function Ball(x, y, sprite)
 {
-    this.x = 0;
-    this.y = 0;
+    this.x = 0.0;
+    this.y = 0.0;
     this.sprite = sprite;
 
     this.minX = edgeThickness;
@@ -10,11 +10,11 @@ function Ball(x, y, sprite)
     this.minY = edgeThickness;
     this.maxY = (spriteRenderer.height - sprite.height) - edgeThickness;
 
-    this.prevX = 0;
-    this.prevY = 0;
+    this.velX = 0.0;
+    this.velY = 0.0;
 
-    this.velX = 0;
-    this.velY = 0;
+    this.launchVelX = -160.0;
+    this.launchVelY = -320.0;
 
     this.launched = false;
 };
@@ -23,15 +23,13 @@ Ball.prototype.update = function()
 {
     if (!this.launched)
     {
-        this.x = paddle.x + (paddle.sprite.width / 2) - (this.sprite.width / 2);
+        this.x = paddle.x + (paddle.sprite.width / 2.0) - (this.sprite.width / 2.0);
 
         return;
     }
 
-    this.prevX = this.x;
-    this.prevY = this.y;
-    this.x += this.velX;
-    this.y += this.velY;
+    this.x += this.velX * deltaTime;
+    this.y += this.velY * deltaTime;
 
     if (this.x < this.minX)
     {
@@ -73,8 +71,8 @@ Ball.prototype.reset = function()
     this.x = paddle.x + (paddle.sprite.width / 2) - (this.sprite.width / 2);
     this.y = paddle.y - this.sprite.height;
 
-    this.velX = 0;
-    this.velY = 0;
+    this.velX = 0.0;
+    this.velY = 0.0;
 
     this.launched = false;
 };
@@ -83,8 +81,8 @@ Ball.prototype.launch = function()
 {
     if (this.launched == false)
     {
-        this.velX = -3;
-        this.velY = -6;
+        this.velX = this.launchVelX;
+        this.velY = this.launchVelY;
 
         this.launched = true;
     }
