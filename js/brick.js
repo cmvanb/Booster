@@ -337,4 +337,6 @@ Brick.prototype.draw = function()
 Brick.prototype.onHit = function()
 {
     this.dropping = true;
+
+    ball.onHitBrick();
 };

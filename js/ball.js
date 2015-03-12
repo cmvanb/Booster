@@ -13,8 +13,8 @@ function Ball(x, y, sprite)
     this.velX = 0.0;
     this.velY = 0.0;
 
-    this.launchVelX = -160.0;
-    this.launchVelY = -320.0;
+    this.launchVelX = -10.0;
+    this.launchVelY = -300.0;
 
     this.launched = false;
 };
@@ -58,6 +58,26 @@ Ball.prototype.update = function()
     {
         this.y = paddle.y - this.sprite.height;
         this.velY = -this.velY;
+
+        var xOffset = ((this.x + (this.sprite.width / 2)) - (paddle.x + (paddle.sprite.width / 2))) * 10.0;
+
+        if (paddle.velX > 0)
+        {
+            this.velX = (xOffset * 0.55) + (paddle.velX * 0.5);
+        }
+        else
+        {
+            this.velX = (this.velX * 0.5) + (xOffset * 0.5);
+        }
+
+        this.velY *= 1.65;
+    }
+
+    this.velY += gravity;
+
+    if (this.velY > terminalVelocity)
+    {
+        this.velY = terminalVelocity;
     }
 };
 
@@ -86,4 +106,10 @@ Ball.prototype.launch = function()
 
         this.launched = true;
     }
+};
+
+Ball.prototype.onHitBrick = function()
+{
+    this.velX *= 0.65;
+    this.velY *= 0.65;
 };

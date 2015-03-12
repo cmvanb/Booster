@@ -12,9 +12,10 @@ var bricks;
 
 var edgeThickness = 0;
 var gravity = 9.81;
+var terminalVelocity = 400.0;
 
-var deltaTime;
-var lastFrameTime;
+var deltaTime = 0.0;
+var lastFrameTime = 0.0;
 
 function main()
 {
