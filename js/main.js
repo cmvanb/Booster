@@ -2,6 +2,7 @@
 
 var spriteRenderer;
 var inputHandler;
+var levelGenerator;
 var paddleSprite;
 var paddle;
 var ballSprite;
@@ -19,6 +20,7 @@ function main()
 {
     spriteRenderer = new SpriteRenderer(640, 480);
     inputHandler = new InputHandler();
+    levelGenerator = new LevelGenerator();
 
     var image = new Image();
     image.addEventListener("load", function()
@@ -47,23 +49,7 @@ function setup()
         ballSprite);
     ball.reset();
 
-    var horizontalBricks = 7;
-    var verticalBricks = 10;
-
-    bricks = [];
-
-    for (var h = 0; h < horizontalBricks; ++h)
-    {
-        for (var v = 0; v < verticalBricks; ++v)
-        {
-            var b = new Brick(
-                40 + h * brickSprite1.width,
-                40 + v * brickSprite1.height,
-                brickSprite1);
-
-            bricks.push(b);
-        }
-    }
+    bricks = levelGenerator.generate();
 };
 
 function gameLoop()
