@@ -23,12 +23,19 @@ Paddle.prototype.update = function()
     {
         this.velX = this.moveSpeed;
     }
+    else if (Math.abs(inputHandler.ipadTilt) > 1.0)
+    {
+        var tilt = Clamp(inputHandler.ipadTilt, -15.0, 15.0) / 15.0;
+
+        this.velX = this.moveSpeed * tilt * 1.25;
+    }
     else
     {
         this.velX = 0.0;
     }
 
-    if (inputHandler.isDown(38)) // Up arrow.
+    if (inputHandler.isDown(38)
+        || inputHandler.touch == true) // Up arrow / touch.
     {
         ball.launch();
     }
