@@ -2,17 +2,17 @@
 function LevelGenerator()
 {
     this.maxColumns = 7;
-    this.maxRows = 16;
+    this.maxRows = 8;
 };
 
 LevelGenerator.prototype.generate = function()
 {
     // Randomly determine what rows and columns will have bricks.
-    var columnChance = 0.7 + (getRandom() * 0.3);
+    var columnChance = 0.5 + (getRandom() * 0.5);
     var columns = Math.ceil(columnChance * this.maxColumns);
     var rowChance = 0.3 + (getRandom() * 0.7);
     var rows = Math.ceil(columnChance * this.maxColumns);
-    var brickSpots = Create2DArray(this.maxRows);
+    var brickSpots = Create2DArray(this.maxColumns);
 
     for (var x = 0; x < this.maxColumns; ++x)
     {

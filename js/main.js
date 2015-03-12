@@ -52,6 +52,13 @@ function setup()
     bricks = levelGenerator.generate();
 };
 
+function cleanUp()
+{
+    delete paddle;
+    delete ball;
+    delete bricks;
+};
+
 function gameLoop()
 {
     update();
@@ -70,12 +77,25 @@ function update()
     paddle.update();
     ball.update();
 
+    var bricksDead = 0;
+
     for (var i = 0; i < bricks.length; ++i)
     {
         if (bricks[i].alive)
         {
             bricks[i].update();
         }
+        else
+        {
+            ++bricksDead;
+        }
+    }
+
+    if (bricksDead == bricks.length)
+    {
+        console.log("Game over! New game.");
+        cleanUp();
+        setup();
     }
 };
 
