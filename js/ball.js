@@ -70,7 +70,7 @@ Ball.prototype.update = function()
             this.velX = (this.velX * 0.5) + (xOffset * 0.5);
         }
 
-        this.velY *= 1.65;
+        this.velY *= 1.75;
     }
 
     this.velY += gravity;
@@ -110,6 +110,6 @@ Ball.prototype.launch = function()
 
 Ball.prototype.onHitBrick = function()
 {
-    this.velX *= 0.65;
-    this.velY *= 0.65;
+    this.velX *= 0.6;
+    this.velY *= 0.6;
 };
